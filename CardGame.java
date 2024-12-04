@@ -13,7 +13,7 @@ public class CardGame {
         int numOfPlayers = -1;
         String packFilePath = "";
 
-        // User inputs number of players
+        // Step 1: Input number of players
         while (numOfPlayers < 2) {
             System.out.print("Enter the number of players (at least 2): ");
             String input = scanner.nextLine().trim();
@@ -29,7 +29,7 @@ public class CardGame {
             }
         }
 
-        // User inputs pack file location and validates it
+        // Step 2: Input file path and validate pack.
         while (true) {
             System.out.print("Enter the location of pack to load: ");
             packFilePath = scanner.nextLine().trim();
@@ -56,7 +56,7 @@ public class CardGame {
         System.out.println("\nNum of Players: " + numOfPlayers + "\nLocation of pack: " + packFilePath);
         System.out.println("Game Starting...\n");
 
-        // Game logic goes here
+        
     }
 
     /**
