@@ -11,6 +11,11 @@ public class CardDeck {
     private List<Card> deck; 
     private int deckId;
 
+    public CardDeck() {
+        this.deck = new ArrayList<>(); // Initialize the deck as empty
+        this.deckId = 1; 
+    }
+    
     /**
      * Constructs a new card deck with the given ID.
      * Initializes the deck as empty.
@@ -22,11 +27,10 @@ public class CardDeck {
         this.deck = new ArrayList<>(); // Initialize an empty deck
     }
 
-    // Getter Methods
-
+    // Getter Methods //
+    
     /**
      * Returns the unique identifier for this deck.
-     * 
      * @return the deck ID
      */
     public int getDeckId() {
@@ -35,7 +39,6 @@ public class CardDeck {
 
     /**
      * Returns the number of cards currently in the deck.
-     * 
      * @return the size of the deck
      */
     public int getDeckSize() {
@@ -44,18 +47,16 @@ public class CardDeck {
 
     /**
      * Provides access to the cards in the deck.
-     * 
      * @return the list of cards in the deck
      */
     public List<Card> getDeckCards() {
         return deck;
     }
 
-    // Additional Methods
+    // Additional Methods //
 
     /**
      * Checks if the deck is empty.
-     * 
      * @return true if the deck is empty, false otherwise
      */
     public boolean isDeckEmpty() {
@@ -64,24 +65,22 @@ public class CardDeck {
 
     /**
      * Draws and removes the top card from the deck.
-     * 
      * @return the card drawn from the top of the deck
      * @throws IllegalStateException if the deck is empty
      */
-    public Card drawCard() {
+    public Card removeCard() {
         if (isDeckEmpty()) {
             throw new IllegalStateException("Cannot draw from an empty deck.");
         }
-        return deck.remove(0); // Removes the first card (top of the deck)
+        return deck.remove(0); 
     }
 
     /**
      * Discards a card by adding it to the bottom of the deck.
-     * 
      * @param card the card to be discarded into the deck
      */
-    public void discardCard(Card card) {
-        deck.add(card); // Adds to the end of the list (bottom of the deck)
+    public void addCard(Card card) {
+        deck.add(card); 
     }
 
     /**
@@ -102,31 +101,28 @@ public class CardDeck {
      * @return a string representing the denominations of the cards in the deck
      */
     public String getDeckCardsAsString() {
-        StringBuilder deckString = new StringBuilder();
-        
-        for (Card card : deck) {
-            deckString.append(card.getDenomAsString()).append(" ");
-        }
-        
-        if (deckString.length() > 0) {
-            deckString.deleteCharAt(deckString.length() - 1); // Remove trailing space
+        if (deck.isEmpty()) {
+            return "No cards in the deck";  
         }
 
+        StringBuilder deckString = new StringBuilder();
+        for (Card card : deck) {
+            deckString.append(card.toString()).append(" "); 
+        }
+        deckString.deleteCharAt(deckString.length() - 1);  
         return deckString.toString();
     }
 
-    /**
-     * Logs the current state of the deck to a file at the end of the game.
-     * e.g.) "deck<deckId>_output.txt".
-     */
     public void logDeckToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("deck" + deckId + "_output.txt"))) {
             writer.write("deck" + deckId + " contents: " + getDeckCardsAsString());
             writer.newLine();
             writer.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Failed to write deck file.");
         }
-
     }
+    
+
+    
 }

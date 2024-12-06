@@ -4,9 +4,8 @@
  */
 public class Card {
 
-    private final int denom; // attribute represents card denomination, abbreviated as 'denom'
+    private final int denom; //card denomination, abbreviated as 'denom'
 
-    // Constructor
     public Card(int denom){
         if (denom <= 0) {
             throw new IllegalArgumentException("Card denomination must be a positive integer.");
@@ -14,14 +13,25 @@ public class Card {
         this.denom = denom;
     }
 
-    // Getter for card denominatino
-    public int getDenom(){
+    /**
+     * Getter method for card denomination.
+     *
+     * @return the card denomination
+     */
+    public int getDenom() {
         return denom;
     }
 
-    // Method to get the denomination as a string
-    public String getDenomAsString(){
-        return Integer.toString(denom);
+
+    /**
+     * Returns the card's denomination as a string.
+     * @return the denomination of the card
+     */
+    @Override
+    public String toString() {
+        return Integer.toString(denom);  // Returns the card's denomination as a string
     }
+
+    
 }
 
