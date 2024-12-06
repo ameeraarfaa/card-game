@@ -1,6 +1,4 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -8,14 +6,22 @@ import java.util.*;
  */
 public class CardDeck {
 
-    private List<Card> deck; 
+    private List<Card> deck;
     private int deckId;
+    private BufferedWriter logWriter;
 
-    public CardDeck() {
+    // Constructor that accepts the game folder
+    public CardDeck(int deckId, File gameFolder) {
+        this.deckId = deckId;
         this.deck = new ArrayList<>(); // Initialize the deck as empty
-        this.deckId = 1; 
+        try {
+            // Create the log file inside the provided gameFolder
+            logWriter = new BufferedWriter(new FileWriter(new File(gameFolder, "deck" + deckId + "_output.txt")));
+        } catch (IOException e) {
+            System.out.println("Failed to create log file for deck " + deckId);
+        }
     }
-    
+
     /**
      * Constructs a new card deck with the given ID.
      * Initializes the deck as empty.
@@ -26,8 +32,6 @@ public class CardDeck {
         this.deckId = deckId;
         this.deck = new ArrayList<>(); // Initialize an empty deck
     }
-
-    // Getter Methods //
     
     /**
      * Returns the unique identifier for this deck.
@@ -53,8 +57,6 @@ public class CardDeck {
         return deck;
     }
 
-    // Additional Methods //
-
     /**
      * Checks if the deck is empty.
      * @return true if the deck is empty, false otherwise
@@ -68,9 +70,9 @@ public class CardDeck {
      * @return the card drawn from the top of the deck
      * @throws IllegalStateException if the deck is empty
      */
-    public Card removeCard() {
+    public synchronized Card removeCard() {
         if (isDeckEmpty()) {
-            throw new IllegalStateException("Cannot draw from an empty deck.");
+            throw new IllegalStateException("Deck " + deckId + " is empty: Cannot draw from an empty deck.");
         }
         return deck.remove(0); 
     }
@@ -79,7 +81,7 @@ public class CardDeck {
      * Discards a card by adding it to the bottom of the deck.
      * @param card the card to be discarded into the deck
      */
-    public void addCard(Card card) {
+    public synchronized void addCard(Card card) {
         deck.add(card); 
     }
 
@@ -113,15 +115,20 @@ public class CardDeck {
         return deckString.toString();
     }
 
-    public void logDeckToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("deck" + deckId + "_output.txt"))) {
+    public void logDeckToFile(File gameFolder) {
+    try {
+        File deckFile = new File(gameFolder, "deck" + deckId + "_output.txt");
+ 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(deckFile))) {
             writer.write("deck" + deckId + " contents: " + getDeckCardsAsString());
             writer.newLine();
             writer.flush();
-        } catch (IOException e) {
-            System.out.println("Failed to write deck file.");
         }
+    } catch (IOException e) {
+        System.out.println("Failed to write deck file.");
     }
+}
+
     
 
     

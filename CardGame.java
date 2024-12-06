@@ -1,5 +1,7 @@
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.io.*;
+import java.text.SimpleDateFormat;
 
 /**
  * Main CardGame class for initializing and managing the game.
@@ -58,115 +60,103 @@ public class CardGame {
         ArrayList<Card> pack = new ArrayList<>();
         Player[] players = new Player[numOfPlayers];
         CardDeck[] decks = new CardDeck[numOfPlayers];
-        boolean gameEnded = false;
-        int turn = 0;
-    
-        // Load the card pack from the file
+        AtomicBoolean gameEnded = new AtomicBoolean(false);
+
+        // Generate a folder name based on the current date and time
+        SimpleDateFormat sdf = new SimpleDateFormat("HH-mm-ss_yyyy-MM-dd");
+        String folderName = "game_" + sdf.format(new Date());
+
+        // Create output folder in directory
+        File gameFolder = new File(folderName);
+        if (!gameFolder.exists()) {
+            gameFolder.mkdirs();
+        }
+
+        // Load and shuffle the card pack
         loadAndShufflePack(packFilePath, pack);
 
-        // Debugging: Prints shuffled pack to terminal to check round-robin card distribution (REMOVE BEFORE SUBMISSION)
-        System.out.println("Shuffled Card Pack:");
-        for (Card card : pack) {
-            System.out.println(card);  
-        }
-        System.out.println();  
-    
-        // Initialize players and decks
+        // **Debugging: Print the shuffled pack**
+        System.out.println("Shuffled Pack: " + pack);
+
+        // Initialize decks
         for (int i = 0; i < numOfPlayers; i++) {
-            players[i] = new Player(i + 1);
-            decks[i] = new CardDeck(i + 1);
-            players[i].start();  // Start each player thread
+            decks[i] = new CardDeck(i + 1, gameFolder);
         }
-    
+
+        // Initialize players
+        for (int i = 0; i < numOfPlayers; i++) {
+            CardDeck leftDeck = decks[i];
+            CardDeck rightDeck = decks[(i + 1) % numOfPlayers];
+            players[i] = new Player(i + 1, gameFolder, leftDeck, rightDeck, gameEnded, players);
+        }
+
         // Distribute cards to players' hands
         for (int i = 0; i < 4 * numOfPlayers; i++) {
             players[i % numOfPlayers].addCardToHand(pack.get(i));
         }
-    
-        // Log players' initial hands with blank line after it
+
+        // Log players' initial hands
         for (Player p : players) {
             p.logAction("initial hand " + p.getHandAsString());
-            p.logAction("");  
+            p.logAction("");
         }
-    
-        // Distribute cards to decks
+
+        // **Debugging: Print the initial cards in each player hand before drawing and discarding**
+        System.out.println("");
+        for (int i = 0; i < numOfPlayers; i++) {
+            System.out.println("Player " + (i + 1) + " Initial Hand: " + players[i].getHandAsString());
+        }
+
+        // Distribute remaining cards to decks
         for (int i = 4 * numOfPlayers; i < 8 * numOfPlayers; i++) {
             decks[i % numOfPlayers].addCard(pack.get(i));
         }
 
-        //Debugging: Checking deck card distribution
+        // **Debugging: Print the initial cards in each deck before players begin drawing and discarding**
+        System.out.println("");
         for (int i = 0; i < numOfPlayers; i++) {
-            System.out.println("Deck " + (i + 1) + " after distribution: " + decks[i].getDeckCardsAsString());
+            System.out.println("Deck " + (i + 1) + " Initial Cards: " + decks[i].getDeckCardsAsString());
         }
-    
-    
+
+        // Start player threads
+        for (Player p : players) {
+            p.start();
+        }
+
         // Game loop
-        while (!gameEnded) {
-            int currentPlayer = turn % numOfPlayers;
-            int discardDeck = (currentPlayer + 1) % numOfPlayers;
-    
-            synchronized (players[currentPlayer]) {
-                // Player action: draw and discard card
-                Card drawnCard = decks[currentPlayer].removeCard();
-                Card discardedCard = players[currentPlayer].discardCard();
-                players[currentPlayer].addCardToHand(drawnCard);
-                decks[discardDeck].addCard(discardedCard);
-    
-                // Log the player's actions and current hand
-                players[currentPlayer].logAction("draws " + drawnCard);
-                players[currentPlayer].logAction("discards " + discardedCard);
-                players[currentPlayer].logAction("current hand " + players[currentPlayer].getHandAsString());
-                players[currentPlayer].logAction("");  // Blank line after draw-discard and current hand
-            }
-    
-            // Check for a winner after each turn
-            for (Player p : players) {
-                if (p.hasWon()) {
-                    // Print winner to the terminal
-                    System.out.println("Player " + p.getPlayerNumber() + " has won!");
-    
-                    // Winner's log
-                    p.logAction("Wins");
-                    p.logAction("Exits");
-                    p.logAction("final hand " + p.getHandAsString());
-    
-                    // Notify other players of the win
-                    for (Player otherPlayer : players) {
-                        if (!otherPlayer.equals(p)) {
-                            otherPlayer.logAction(
-                                "player " + p.getPlayerNumber() + " has informed player " +
-                                otherPlayer.getPlayerNumber() + " that player " + p.getPlayerNumber() + " has won"
-                            );
-                            otherPlayer.logAction("exits");
-                            otherPlayer.logAction("hand: " + otherPlayer.getHandAsString());
-                        }
-                    }
-    
-                    gameEnded = true;
-                    break;
-                }
-            }
-    
-            turn++;
+        while (!gameEnded.get()) {
+            // Game continues as long as no player has won
+            Thread.sleep(100); // Adjust this delay if necessary
         }
-    
+
+        // Print the directory where the folder is created
+        System.out.println("\nFile Output Path: " + gameFolder.getAbsolutePath());
+
         // End game: Stop all player threads and log deck contents
         for (Player p : players) {
             p.endGame();
             try {
-                p.closeLog();  // Close each player's log after their actions are finished
+                p.closeLog();
             } catch (IOException e) {
                 System.out.println("Error closing player " + p.getPlayerNumber() + "'s log file.");
             }
         }
 
+        // **Debugging: Print the winner**
+        System.out.println("");
+        for (Player p : players) {
+            if (p.hasWon()) {
+                System.out.println("Player " + p.getPlayerNumber() + " Wins!");
+                break;
+            }
+        }
+
+        // Log deck contents
         for (CardDeck d : decks) {
-            d.logDeckToFile();
+            d.logDeckToFile(gameFolder);
         }
     }
-    
-    
-    
+
     /**
      * Loads card denominations from a specified file and adds them as Card objects to the given list.
      * Then, shuffles the list to randomize the card order.
