@@ -7,8 +7,8 @@ public class Card {
     private final int denom; //card denomination, abbreviated as 'denom'
 
     public Card(int denom){
-        if (denom <= 0) {
-            throw new IllegalArgumentException("Card denomination must be a positive integer.");
+        if (denom < 0) {
+            throw new IllegalArgumentException("Card denomination must be a non-negative integer.");
         }
         this.denom = denom;
     }

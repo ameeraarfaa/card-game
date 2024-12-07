@@ -4,7 +4,8 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 
 /**
- * Main CardGame class for initializing and managing the game.
+ * This is the executable class that handles
+ * game initialisation, player actions and overall game flow.
  */
 public class CardGame {
     public static void main(String[] args) throws InterruptedException {
@@ -14,7 +15,7 @@ public class CardGame {
 
         // Step 1: Input number of players
         while (true) {
-            System.out.print("Enter the number of players (at least 2): ");
+            System.out.print("Please enter the number of players:\n");
             String input = scanner.nextLine().trim();
             try {
                 numOfPlayers = Integer.parseInt(input);
@@ -25,48 +26,56 @@ public class CardGame {
             }
         }
         
-
         // Step 2: Input and validate file path for card pack
         while (true) {
-            System.out.print("Enter the location of pack to load: ");
+            System.out.print("Please enter the location of pack to load:\n");
             packFilePath = scanner.nextLine().trim();
 
-            // Remove quotation marks if present
             if (packFilePath.startsWith("\"") && packFilePath.endsWith("\"")) {
                 packFilePath = packFilePath.substring(1, packFilePath.length() - 1);
             }
 
-            // Check if the file exists before attempting to validate its contents
+            // Check if the file exists 
             File file = new File(packFilePath);
             if (!file.exists()) {
                 System.out.println("File not found: " + packFilePath);
                 continue;  
             } 
 
-            // If file exists, then validate its content
+            // Validate content
             if (validateFile(packFilePath, numOfPlayers)) {
-                break;  // If the file is valid, exit the loop
+                break;
             } 
         }
 
         System.out.println("\nNumber of Players: " + numOfPlayers + " | " + "File Path: " + packFilePath);
-        System.out.println("Starting Game...");
 
         // Step 3: Start the game
         runGame(packFilePath, numOfPlayers);
+        scanner.close();
     }
 
+
+    /**
+     * Runs the game by initialising players, decks, and distributing cards. 
+     * It handles the game loop, player actions, logging, and game termination. 
+     * After the game ends, it logs the results and player actions to output files.
+     *
+     * @param packFilePath the path to the file containing the card pack
+     * @param numOfPlayers the number of players in the game
+     * @throws InterruptedException if the game thread is interrupted during execution
+     */
     public static void runGame(String packFilePath, int numOfPlayers) throws InterruptedException {
         ArrayList<Card> pack = new ArrayList<>();
         Player[] players = new Player[numOfPlayers];
         CardDeck[] decks = new CardDeck[numOfPlayers];
         AtomicBoolean gameEnded = new AtomicBoolean(false);
 
-        // Generate a folder name based on the current date and time
+        System.out.println("---------------- GAME START ----------------\n");
+
+        // Generate a folder for .txt output files
         SimpleDateFormat sdf = new SimpleDateFormat("HH-mm-ss_yyyy-MM-dd");
         String folderName = "game_" + sdf.format(new Date());
-
-        // Create output folder in directory
         File gameFolder = new File(folderName);
         if (!gameFolder.exists()) {
             gameFolder.mkdirs();
@@ -74,16 +83,13 @@ public class CardGame {
 
         // Load and shuffle the card pack
         loadAndShufflePack(packFilePath, pack);
+        System.out.println("Loaded & Shuffled Pack: " + pack + "\n"); //debugging
 
-        // **Debugging: Print the shuffled pack**
-        System.out.println("Shuffled Pack: " + pack);
-
-        // Initialize decks
+        // Initialise decks and players
         for (int i = 0; i < numOfPlayers; i++) {
             decks[i] = new CardDeck(i + 1, gameFolder);
         }
 
-        // Initialize players
         for (int i = 0; i < numOfPlayers; i++) {
             CardDeck leftDeck = decks[i];
             CardDeck rightDeck = decks[(i + 1) % numOfPlayers];
@@ -98,13 +104,6 @@ public class CardGame {
         // Log players' initial hands
         for (Player p : players) {
             p.logAction("initial hand " + p.getHandAsString());
-            p.logAction("");
-        }
-
-        // **Debugging: Print the initial cards in each player hand before drawing and discarding**
-        System.out.println("");
-        for (int i = 0; i < numOfPlayers; i++) {
-            System.out.println("Player " + (i + 1) + " Initial Hand: " + players[i].getHandAsString());
         }
 
         // Distribute remaining cards to decks
@@ -112,26 +111,31 @@ public class CardGame {
             decks[i % numOfPlayers].addCard(pack.get(i));
         }
 
-        // **Debugging: Print the initial cards in each deck before players begin drawing and discarding**
+        // **DEBUGGING: Print the initial cards in each deck before players begin drawing and discarding**
         System.out.println("");
         for (int i = 0; i < numOfPlayers; i++) {
             System.out.println("Deck " + (i + 1) + " Initial Cards: " + decks[i].getDeckCardsAsString());
         }
 
+        System.out.println("");
+
         // Start player threads
         for (Player p : players) {
             p.start();
+            System.out.println("Player " + p.getPlayerNumber() + " thread started.");
+            //printGameState(players, decks);
         }
+
+        System.out.println("");
 
         // Game loop
         while (!gameEnded.get()) {
-            // Game continues as long as no player has won
-            Thread.sleep(100); // Adjust this delay if necessary
+            Thread.sleep(500); 
         }
 
         // Print the directory where the folder is created
-        System.out.println("\nFile Output Path: " + gameFolder.getAbsolutePath());
-
+        System.out.println("\n.txt output files can be found at: " + gameFolder.getAbsolutePath());
+        
         // End game: Stop all player threads and log deck contents
         for (Player p : players) {
             p.endGame();
@@ -142,7 +146,7 @@ public class CardGame {
             }
         }
 
-        // **Debugging: Print the winner**
+        //Print winner to terminal
         System.out.println("");
         for (Player p : players) {
             if (p.hasWon()) {
@@ -157,27 +161,27 @@ public class CardGame {
         }
     }
 
+
     /**
-     * Loads card denominations from a specified file and adds them as Card objects to the given list.
-     * Then, shuffles the list to randomize the card order.
+     * Loads a pack of cards from a file and shuffles them.
+     * Each card is represented by an integer value read from the file, 
+     * and the pack is shuffled to randomize the order.
      *
-     * @param packFilePath the path to the file containing the card denominations
-     * @param pack the list to store the loaded and shuffled Card objects
-     * @throws IllegalArgumentException if a non-positive denomination is encountered in the file
-     * @throws FileNotFoundException if the specified file is not found
+     * @param packFilePath the path to the file containing the card values
+     * @param pack the list to store the loaded and shuffled cards
      */
     private static void loadAndShufflePack(String packFilePath, ArrayList<Card> pack) {
         try (Scanner scanner = new Scanner(new File(packFilePath))) {
             // Step 1: Load the pack into a list of Card objects
             while (scanner.hasNextInt()) {
                 int cardValue = scanner.nextInt();
-                if (cardValue <= 0) {
-                    throw new IllegalArgumentException("Card denomination must be a positive integer.");
+                if (cardValue < 0) {
+                    throw new IllegalArgumentException("Card denomination must be a non-negative integer (>= 0).");
                 }
                 pack.add(new Card(cardValue));  
             }
-        
-            // Step 2: Shuffle the pack to randomise card order
+    
+            // Step 2: Shuffle the pack to randomize card order
             Collections.shuffle(pack);  
         } catch (FileNotFoundException e) {
             System.out.println("Failed to load pack from file.");
@@ -185,16 +189,17 @@ public class CardGame {
             System.out.println(e.getMessage());
         }
     }
-        
-    
+
+
     /**
-     * Validates the contents of a card pack file.
-     * Checks that all values are positive integers and that the file contains exactly 8 * number of players values.
+     * Validates the card pack file by checking for negative values, non-numeric entries,
+     * and ensuring the file contains the correct number of cards for the given number of players.
      *
      * @param packFilePath the path to the card pack file
-     * @param numOfPlayers the number of players, used to calculate the expected number of cards in the file
+     * @param numOfPlayers the number of players in the game
      * @return true if the file is valid, false otherwise
      */
+
     public static Boolean validateFile(String packFilePath, int numOfPlayers) {
         ArrayList<Integer> pack = new ArrayList<>();
         
@@ -202,7 +207,7 @@ public class CardGame {
             while (scanner.hasNext()) {
                 if (scanner.hasNextInt()) {
                     int value = scanner.nextInt();
-                    if (value < 0) {
+                    if (value < 0) { 
                         System.out.println("Invalid File: Pack contains negative integers in file\n");
                         return false;
                     }
@@ -231,5 +236,7 @@ public class CardGame {
         }
     }
     
-    
 }
+
+    
+
