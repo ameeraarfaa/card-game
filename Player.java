@@ -132,6 +132,8 @@ class Player extends Thread {
                 if (hasWon()) {
                     gameEnded.set(true);
                     logAction("Wins");
+                    logAction("Exits");
+                    logAction("final hand: " + getHandAsString());
                     notifyPlayersOfWin(this);
                     break;
                 }
@@ -151,7 +153,7 @@ class Player extends Thread {
      * for each player, and displays their hand.
      * @param winner player who has won the game
      */
-    private void notifyPlayersOfWin(Player winner) {
+    public void notifyPlayersOfWin(Player winner) {
         for (Player otherPlayer : players) {
             if (!otherPlayer.equals(winner)) {
                 synchronized (otherPlayer) {

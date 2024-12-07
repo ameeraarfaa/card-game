@@ -111,6 +111,18 @@ public class CardGame {
             decks[i % numOfPlayers].addCard(pack.get(i));
         }
 
+        // Check for immediate winners after cards are dealt
+        for (Player p : players) {
+            if (p.hasWon()) {
+                gameEnded.set(true);
+                p.logAction("Wins");  
+                p.logAction("Exits");
+                p.logAction("final hand: " + p.getHandAsString());
+                p.notifyPlayersOfWin(p); 
+                break;  
+            }
+        }
+
         // **DEBUGGING: Print the initial cards in each deck before players begin drawing and discarding**
         System.out.println("");
         for (int i = 0; i < numOfPlayers; i++) {
@@ -182,7 +194,7 @@ public class CardGame {
             }
     
             // Step 2: Shuffle the pack to randomize card order
-            Collections.shuffle(pack);  
+            //Collections.shuffle(pack);  
         } catch (FileNotFoundException e) {
             System.out.println("Failed to load pack from file.");
         } catch (IllegalArgumentException e) {
