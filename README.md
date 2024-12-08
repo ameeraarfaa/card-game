@@ -14,15 +14,15 @@ This Java terminal-based card game simulates a multiplayer card game where playe
   - From Command Line:
       - Navigate to the 'bin' directory.
       - Run the following command to start the game.
-        '''
-        java CardGame
-        '''
+        ```
+         java CardGame
+        ```
   - As JAR file:
       - Navigate to the 'build' directory.
       - Run the following command.
-        '''
-        java -jar cards.jar
-        '''
+        ```
+         java -jar cards.jar
+        ```
 3. Follow instructions on Terminal
 
 ## Given Pack Files
