@@ -142,6 +142,11 @@ public class CardGame {
         //Step 9: Game loop
         while (!gameEnded.get()) {
             Thread.sleep(500); 
+
+            System.out.println("");
+            for (int i = 0; i < numOfPlayers; i++) {
+                System.out.println("Deck " + (i + 1) + " Cards: " + decks[i].getDeckCardsAsString());
+            }
         }
 
         // Print the directory where the folder is created

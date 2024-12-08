@@ -52,6 +52,8 @@ class Player extends Thread {
 
     /**
      * Method that chooses and discards a card to deck.
+     * Implements game playing strategy by discarding the first card in hand 
+     * that does not match player's preferred denomination.
      * @return card to discard to deck
      */
     public Card discardCard() {
@@ -136,7 +138,7 @@ class Player extends Thread {
                     notifyPlayersOfWin(this);
                     break;
                 }
-                
+
                 Thread.sleep(500);
 
             } catch (InterruptedException e) {
