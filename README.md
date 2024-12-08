@@ -11,13 +11,13 @@ This Java terminal-based card game simulates a multiplayer card game where playe
 ## Installation
 1. Clone or download the repository to your local machine.
 2. Running the Game
-   - From Command Line:
+   - Using Executable Class (CardGame):
      - Navigate to the 'bin' directory.
      - Run the following command to start the game.
         ```
          java CardGame
         ```
-   - As JAR file:
+   - Using JAR file:
      - Navigate to the 'build' directory.
      - Run the following command.
         ```
