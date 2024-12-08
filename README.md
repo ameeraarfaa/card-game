@@ -3,10 +3,10 @@
 This Java terminal-based card game simulates a multiplayer card game where players draw and discard cards in turns. The game runs with multiple players, each managing their own hand, while competing to meet the win conditions.
 
 ## Project Structure
-Card.java: Class representing a single card object.
-CardDeck.java: Class encapsulating the attributes and behaviours of a list of cards, known as a Deck.
-Player.java: Class encapsulating the attribtues and behaviours of a player, including their gameplay strategy.
-CardGame.java: Main executable class that handles user input and gameflow.
+- Card.java: Class representing a single card object.
+- CardDeck.java: Class encapsulating the attributes and behaviours of a list of cards, known as a Deck.
+- Player.java: Class encapsulating the attribtues and behaviours of a player, including their gameplay strategy.
+- CardGame.java: Main executable class that handles user input and gameflow.
 
 ## Installation
 1. Clone or download the repository to your local machine.
