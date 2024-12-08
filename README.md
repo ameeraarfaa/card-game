@@ -10,12 +10,20 @@ This Java terminal-based card game simulates a multiplayer card game where playe
 
 ## Installation
 1. Clone or download the repository to your local machine.
-2. Compile the Java Files
-  ```
-  javac *.java
-  ```
-3. Run the Game
-4. Follow instructions on Terminal
+2. Running the Game
+  - From Command Line:
+      - Navigate to the 'bin' directory.
+      - Run the following command to start the game.
+        '''
+        java CardGame
+        '''
+  - As JAR file:
+      - Navigate to the 'build' directory.
+      - Run the following command.
+        '''
+        java -jar cards.jar
+        '''
+3. Follow instructions on Terminal
 
 ## Given Pack Files
 These files can be found in the 'Res' folder. In each pack, denominations are included up to a point where the total number of cards, calculated as 4 copies of each denomination, satisfies the 8*N rule, where N is the number of players. This ensures that the total number of cards in the pack aligns with the required card count for the game, and confirms that it is legal for the denomination of a card to exceed N. For example:
