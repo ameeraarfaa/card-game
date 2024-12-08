@@ -1,16 +1,34 @@
-# Example headings
+# Multiplayer Card Game
+## Overview
+This Java terminal-based card game simulates a multiplayer card game where players draw and discard cards in turns. The game runs with multiple players, each managing their own hand, while competing to meet the win conditions.
 
-## Sample Section
+## Project Structure
+Card.java: Class representing a single card object.
+CardDeck.java: Class encapsulating the attributes and behaviours of a list of cards, known as a Deck.
+Player.java: Class encapsulating the attribtues and behaviours of a player, including their gameplay strategy.
+CardGame.java: Main executable class that handles user input and gameflow.
 
-## This'll be a _Helpful_ Section About the Greek Letter Θ!
-A heading containing characters not allowed in fragments, UTF-8 characters, two consecutive spaces between the first and second words, and formatting.
+## Installation
+1. Clone or download the repository to your local machine.
+2. Compile the Java Files
+  ```
+  javac *.java
+  ```
+3. Run the Game
+4. Follow instructions on Terminal
 
-## This heading is not unique in the file
+## Given Pack Files
+These files can be found in the 'Res' folder. In each pack, denominations are included up to a point where the total number of cards, calculated as 4 copies of each denomination, satisfies the 8*N rule, where N is the number of players. This ensures that the total number of cards in the pack aligns with the required card count for the game. For example:
 
-TEXT 1
+> In a 3-player game, the given pack will include denominations up to 6, since 4 copies of each denomination (4 x 6 = 24 cards) matches the total card count required by the 8-player rule (3 x 8 = 24).
 
-## This heading is not unique in the file
+### Simple Multiplayer Packs
+2_players.txt: 2-player game
+3_players.txt: 3-player game
+6_player.txt: 6 player game
+8_player.txt: 8 player game
 
-TEXT 2
+### Invalid File Input Packs
 
-# Links to the example headings above
+### Specific Scenario Packs
+
