@@ -23,10 +23,10 @@ These files can be found in the 'Res' folder. In each pack, denominations are in
 > In a 3-player game, the given pack will include denominations up to 6, since 4 copies of each denomination (4 x 6 = 24 cards) matches the total card count required by the 8-player rule (3 x 8 = 24).
 
 ### Simple Multiplayer Packs
-2_players.txt: 2-player game
-3_players.txt: 3-player game
-6_player.txt: 6 player game
-8_player.txt: 8 player game
+- 2_players.txt: 2-player game
+- 3_players.txt: 3-player game
+- 6_player.txt: 6 player game
+- 8_player.txt: 8 player game
 
 ### Invalid File Input Packs
 
