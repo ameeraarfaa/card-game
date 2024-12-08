@@ -8,7 +8,7 @@ This Java terminal-based card game simulates a multiplayer card game where playe
 - Player.java: Class encapsulating the attribtues and behaviours of a player, including their gameplay strategy.
 - CardGame.java: Main executable class that handles user input and gameflow.
 
-## Installation
+## Installation & Playing
 1. Clone or download the repository to your local machine.
 2. Running the Game
    - Using Executable Class (CardGame):
