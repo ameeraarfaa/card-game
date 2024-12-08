@@ -18,7 +18,7 @@ This Java terminal-based card game simulates a multiplayer card game where playe
 4. Follow instructions on Terminal
 
 ## Given Pack Files
-These files can be found in the 'Res' folder. In each pack, denominations are included up to a point where the total number of cards, calculated as 4 copies of each denomination, satisfies the 8*N rule, where N is the number of players. This ensures that the total number of cards in the pack aligns with the required card count for the game. For example:
+These files can be found in the 'Res' folder. In each pack, denominations are included up to a point where the total number of cards, calculated as 4 copies of each denomination, satisfies the 8*N rule, where N is the number of players. This ensures that the total number of cards in the pack aligns with the required card count for the game, and confirms that it is legal for the denomination of a card to exceed N. For example:
 
 > In a 3-player game, the given pack will include denominations up to 6, since 4 copies of each denomination (4 x 6 = 24 cards) matches the total card count required by the 8*N requirement (3 x 8 = 24).
 
