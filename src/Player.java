@@ -157,7 +157,6 @@ class Player extends Thread {
         for (Player otherPlayer : players) {
             if (!otherPlayer.equals(winner)) {
                 synchronized (otherPlayer) {
-                    // Correct format: "Player X has informed player Y that player X has won"
                     otherPlayer.logAction(
                         "Player " + winner.playerNumber + " has informed player " +
                         otherPlayer.playerNumber + " that player " + winner.playerNumber + " has won"
@@ -176,19 +175,26 @@ class Player extends Thread {
      */
     public void logAction(String action) {
         try {
+            // If the action is empty, log a blank line
             if (action.isEmpty()) {
                 logWriter.write("\n");
-                System.out.println(); //manual terminal inspection
+                System.out.println(); // manual terminal inspection
             } else {
-                logWriter.write("Player " + playerNumber + " " + action + "\n");
-                System.out.println("Player " + playerNumber + " " + action);  //manual terminal inspection
+                if (action.contains("has informed")) {
+                    logWriter.write(action + "\n");
+                    System.out.println(action);  // manual terminal inspection
+                } else {
+                    logWriter.write("Player " + playerNumber + " " + action + "\n");
+                    System.out.println("Player " + playerNumber + " " + action);  // manual terminal inspection
+                }
+                logWriter.flush();
             }
-            logWriter.flush();
         } catch (IOException e) {
             System.out.println("Failed to log action for player " + playerNumber);
             e.printStackTrace();
         }
     }
+
 
 
     /**
