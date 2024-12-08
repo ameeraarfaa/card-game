@@ -12,6 +12,9 @@ public class CardDeck {
     private BufferedWriter logWriter;
 
     public CardDeck(int deckId, File gameFolder) {
+        if (deckId <= 0) {
+            throw new IllegalArgumentException("Deck ID must be a positive integer.");
+        }
         this.deckId = deckId;
         this.deck = new ArrayList<>();
         try {
@@ -21,18 +24,6 @@ public class CardDeck {
         }
     }
 
-
-    /**
-     * Constructs a new card deck with the given ID.
-     * Initialises the deck as empty.
-     *
-     * @param deckId the unique identifier for this deck
-     */
-    public CardDeck(int deckId) {
-        this.deckId = deckId;
-        this.deck = new ArrayList<>(); 
-    }
-    
 
     /**
      * Returns the unique identifier for this deck.
@@ -56,7 +47,7 @@ public class CardDeck {
      * Provides access to the cards in the deck.
      * @return the list of cards in the deck
      */
-    public List<Card> getDeckCards() {
+    public synchronized List<Card> getDeckCards() {
         return deck;
     }
 
@@ -65,7 +56,7 @@ public class CardDeck {
      * Checks if the deck is empty.
      * @return true if the deck is empty, false otherwise
      */
-    public boolean isDeckEmpty() {
+    public synchronized boolean isDeckEmpty() {
         return deck.isEmpty();
     }
 
@@ -98,7 +89,7 @@ public class CardDeck {
      * @return the card on top of the deck
      * @throws IllegalStateException if the deck is empty
      */
-    public Card getTopCard() {
+    public synchronized Card getTopCard() {
         if (isDeckEmpty()) {
             throw new IllegalStateException("Deck is empty, no top card.");
         }
@@ -110,7 +101,7 @@ public class CardDeck {
      * Returns the denominations of the cards in the deck as a space-separated string.
      * @return a string representing the denominations of the cards in the deck
      */
-    public String getDeckCardsAsString() {
+    public synchronized String getDeckCardsAsString() {
         if (deck.isEmpty()) {
             return "No cards in the deck";  
         }

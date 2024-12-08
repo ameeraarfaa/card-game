@@ -58,7 +58,7 @@ public class CardGame {
 
     /**
      * Runs the game by initialising players, decks, and distributing cards. 
-     * It handles the game loop, player actions, logging, and game termination. 
+     * It handles the game loop, logging, and game termination. 
      * After the game ends, it logs the results and player actions to output files.
      *
      * @param packFilePath the path to the file containing the card pack
@@ -73,7 +73,7 @@ public class CardGame {
 
         System.out.println("---------------- GAME START ----------------\n");
 
-        // Generate a folder for .txt output files
+        //Step 1: Generate a folder for .txt output files
         SimpleDateFormat sdf = new SimpleDateFormat("HH-mm-ss_yyyy-MM-dd");
         String folderName = "game_" + sdf.format(new Date());
         File gameFolder = new File(folderName);
@@ -81,11 +81,11 @@ public class CardGame {
             gameFolder.mkdirs();
         }
 
-        // Load and shuffle the card pack
+        //Step 2: Load and shuffle the card pack
         loadAndShufflePack(packFilePath, pack);
         System.out.println("Loaded & Shuffled Pack: " + pack + "\n"); //debugging
 
-        // Initialise decks and players
+        //Step 3: Initialise decks and players
         for (int i = 0; i < numOfPlayers; i++) {
             decks[i] = new CardDeck(i + 1, gameFolder);
         }
@@ -96,22 +96,22 @@ public class CardGame {
             players[i] = new Player(i + 1, gameFolder, leftDeck, rightDeck, gameEnded, players);
         }
 
-        // Distribute cards to players' hands
+        // Step 4: Distribute cards to players' hands
         for (int i = 0; i < 4 * numOfPlayers; i++) {
             players[i % numOfPlayers].addCardToHand(pack.get(i));
         }
 
-        // Log players' initial hands
+        //Step 5: Log players' initial hands
         for (Player p : players) {
             p.logAction("initial hand " + p.getHandAsString());
         }
 
-        // Distribute remaining cards to decks
+        //Step 6: Distribute remaining cards to decks
         for (int i = 4 * numOfPlayers; i < 8 * numOfPlayers; i++) {
             decks[i % numOfPlayers].addCard(pack.get(i));
         }
 
-        // Check for immediate winners after cards are dealt
+        //Step 7: Check for immediate winners after cards are dealt
         for (Player p : players) {
             if (p.hasWon()) {
                 gameEnded.set(true);
@@ -131,16 +131,15 @@ public class CardGame {
 
         System.out.println("");
 
-        // Start player threads
+        //Step 8: Start player threads
         for (Player p : players) {
             p.start();
             System.out.println("Player " + p.getPlayerNumber() + " thread started.");
-            //printGameState(players, decks);
         }
 
         System.out.println("");
 
-        // Game loop
+        //Step 9: Game loop
         while (!gameEnded.get()) {
             Thread.sleep(500); 
         }
@@ -148,7 +147,7 @@ public class CardGame {
         // Print the directory where the folder is created
         System.out.println("\n.txt output files can be found at: " + gameFolder.getAbsolutePath());
         
-        // End game: Stop all player threads and log deck contents
+        //Step 10: End game: Stop all player threads and log deck contents
         for (Player p : players) {
             p.endGame();
             try {
@@ -158,7 +157,7 @@ public class CardGame {
             }
         }
 
-        //Print winner to terminal
+        //Step 11: Print winner to terminal
         System.out.println("");
         for (Player p : players) {
             if (p.hasWon()) {
@@ -167,7 +166,7 @@ public class CardGame {
             }
         }
 
-        // Log deck contents
+        //Step 11: Log deck contents
         for (CardDeck d : decks) {
             d.logDeckToFile(gameFolder);
         }
@@ -184,6 +183,7 @@ public class CardGame {
      */
     private static void loadAndShufflePack(String packFilePath, ArrayList<Card> pack) {
         try (Scanner scanner = new Scanner(new File(packFilePath))) {
+
             // Step 1: Load the pack into a list of Card objects
             while (scanner.hasNextInt()) {
                 int cardValue = scanner.nextInt();
@@ -194,7 +194,7 @@ public class CardGame {
             }
     
             // Step 2: Shuffle the pack to randomize card order
-            //Collections.shuffle(pack);  
+            Collections.shuffle(pack);  
         } catch (FileNotFoundException e) {
             System.out.println("Failed to load pack from file.");
         } catch (IllegalArgumentException e) {

@@ -118,7 +118,6 @@ class Player extends Thread {
                     addCardToHand(drawnCard);
                     logAction("draws " + drawnCard + " from Deck " + leftDeck.getDeckId());
 
-                    // Discard a card to the right deck
                     Card discardedCard = discardCard();
                     synchronized (rightDeck) {
                         rightDeck.addCard(discardedCard);
@@ -137,8 +136,7 @@ class Player extends Thread {
                     notifyPlayersOfWin(this);
                     break;
                 }
-
-                // Simulate turn delay
+                
                 Thread.sleep(500);
 
             } catch (InterruptedException e) {
@@ -168,7 +166,6 @@ class Player extends Thread {
             }
         }
     }
-
 
     /**
      * Logs the specified action for the player both to a log file and the console.
@@ -201,6 +198,7 @@ class Player extends Thread {
             logWriter.close();  
         }
     }
+
 
     /**
      * Ends the game by closing the log file. 
