@@ -28,6 +28,7 @@ This Java terminal-based card game simulates a multiplayer card game where playe
      - Ensure that the number is 2 or greater, as the game requires at least two players
    - **Providing the Card Pack File**:
      - Place the card pack file in the res folder, located at the root of the project directory.
+     - In addition to the provided files, users may also add their own packs into the 'res' file.
      - When prompted, type the file name (e.g., pack.txt) and press Enter.
 
 ## Given Pack Files
@@ -36,22 +37,25 @@ This Java terminal-based card game simulates a multiplayer card game where playe
 > In a 3-player game, the given pack will include denominations up to 6, since 4 copies of each denomination (4 x 6 = 24 cards) matches the total card count required by the 8*N requirement (3 x 8 = 24).
 
 ### Simple Multiplayer Packs
-- **2_players.txt**: 2-player game.
-- **3_players.txt**: 3-player game.
-- **6_player.txt**: 6 player game.
-- **8_player.txt**: 8 player game.
+These packs simulate normal gameplay for testing with various numbers of players, ranging from the minimum (2 players) to a larger group (8 players), designed for functional and stress testing.
+- **2_players.txt**: 2-player game for basic testing.
+- **3_players.txt**: 3-player game for moderate multiplayer scenarios.
+- **6_player.txt**: 6 player game for moderate multiplayer scenarios.
+- **8_player.txt**: 8 player game for stress testing extended multiplayer scenarios.
 
 ### Valid Scenario Packs
-- **2_players_horizontal_w_gap.txt**: Values arranged in a continuous horizontal sequence with gaps between them.
-- **3_players_miw.txt**: Multiple immediate win, requires commenting out shuffle method in loadAndShuffle().
-- **3_players_p1_iw_nonpref_denom**: Player 1 immediate win with non-preffered denomination, requires commenting out shuffle method in loadAndShuffle().
-- **3_players_p1_iw_pref_denom**: Player 1 immediate win with preffered denomination, requires commenting out shuffle method in loadAndShuffle().
-- **4_players_with_Zeroes**: Contains zeroes as a pack value.
-
+These packs test specific scenarios that should still be accepted by the game, focusing on edge cases and unique gameplay conditions.
+- **2_players_horizontal_w_gap.txt**: A 2-player game with values arranged horizontally and blank lines between them.
+- **3_players_miw.txt**: A 3-player game where multiple players (i.e. 1 and 2) achieve an immediate win; requires commenting out the shuffle method in loadAndShuffle().
+- **3_players_p1_iw_nonpref_denom**: A 3-player game where Player 1 wins immediately with a non-preferred denomination; requires commenting out the shuffle method in loadAndShuffle().
+- **3_players_p1_iw_pref_denom**: A 3-player game where Player 1 wins immediately with their preferred denomination; requires commenting out the shuffle method in loadAndShuffle().
+- **4_players_with_Zeroes**: A 4-player game pack containing zeroes among the pack values to test handling of zero-value cards.
+  
 ### Invalid File Input Packs
-- **2_players _w_gap.txt**: Pack containing empty space in between values.
-- **2_players_horizontal_no_gap.txt**: Pack containing values arranged in a continuous horizontal sequence, with no gaps between them.
-- **2_players_w_negative_integer.txt**: Pack containing negative integers.
-- **2_players_w_special_character.txt**: Pack containing special characters.
-- **2_players_w_string_number.txt**: Pack containing string values.
+These packs are intentionally malformed and should not be accepted by the game, triggering specific error messages and requiring the user to input a valid file.
+- **2_players _w_gap.txt**: A 2-player game pack with unexpected blank spaces in between values.
+- **2_players_horizontal_no_gap.txt**: A 2-player game pack with values arranged horizontally but without blank lines between them, causing format errors.
+- **2_players_w_negative_integer.txt**: A 2-player game pack containing negative integers.
+- **2_players_w_special_character.txt**:  2-player game pack with special characters among the values.
+- **2_players_w_string_number.txt**: A 2-player game pack containing string values (e.g., "one" instead of 1).
 
