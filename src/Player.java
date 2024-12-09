@@ -173,9 +173,8 @@ class Player extends Thread {
      * If the action is empty, a blank line is logged. Otherwise, the action is logged with the player's number.
      * @param action the action description to log
      */
-    public void logAction(String action) {
+    public synchronized void logAction(String action) {
         try {
-            // If the action is empty, log a blank line
             if (action.isEmpty()) {
                 logWriter.write("\n");
                 System.out.println(); // manual terminal inspection

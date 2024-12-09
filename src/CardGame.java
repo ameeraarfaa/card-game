@@ -26,16 +26,15 @@ public class CardGame {
             }
         }
         
-        // Step 2: Input and validate file path for card pack
+        // Step 2: Input and validate file name for card pack
         while (true) {
-            System.out.print("Please enter the location of pack to load:\n");
-            packFilePath = scanner.nextLine().trim();
+            System.out.print("Please enter the name of the card pack file:\n");
+            String pack = scanner.nextLine().trim();
+            
+            // Construct the file path
+            packFilePath = "./../res/" + pack;
 
-            if (packFilePath.startsWith("\"") && packFilePath.endsWith("\"")) {
-                packFilePath = packFilePath.substring(1, packFilePath.length() - 1);
-            }
-
-            // Check if the file exists 
+            // Check if the file exists
             File file = new File(packFilePath);
             if (!file.exists()) {
                 System.out.println("File not found: " + packFilePath);
@@ -141,8 +140,6 @@ public class CardGame {
 
         //Step 9: Game loop
         while (!gameEnded.get()) {
-            Thread.sleep(500); 
-
             System.out.println("");
             for (int i = 0; i < numOfPlayers; i++) {
                 System.out.println("Deck " + (i + 1) + " Cards: " + decks[i].getDeckCardsAsString());
@@ -156,11 +153,14 @@ public class CardGame {
         for (Player p : players) {
             p.endGame();
             try {
-                p.closeLog();
+                if (p.isAlive()) {
+                    p.closeLog();
+                }
             } catch (IOException e) {
                 System.out.println("Error closing player " + p.getPlayerNumber() + "'s log file.");
             }
         }
+        
 
         //Step 11: Print winner to terminal
         System.out.println("");
