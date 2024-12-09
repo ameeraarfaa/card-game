@@ -52,7 +52,7 @@ These packs test specific scenarios that should still be accepted by the game, f
 - **4_players_with_Zeroes**: A 4-player game pack containing zeroes among the pack values to test handling of zero-value cards.
   
 ### Invalid File Input Packs
-These packs are intentionally malformed and should not be accepted by the game, triggering specific error messages and requiring the user to re-enter a file path.
+These packs are intentionally invalid and should not be accepted by the game, triggering specific error messages and requiring the user to re-enter a file path.
 - **2_players _w_gap.txt**: A 2-player game pack with unexpected blank spaces in between values.
 - **2_players_horizontal_no_gap.txt**: A 2-player game pack with values arranged horizontally but without blank lines between them, causing format errors.
 - **2_players_w_negative_integer.txt**: A 2-player game pack containing negative integers.
