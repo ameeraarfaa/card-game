@@ -152,16 +152,8 @@ public class CardGame {
         //Step 10: End game: Stop all player threads and log deck contents
         for (Player p : players) {
             p.endGame();
-            try {
-                if (p.isAlive()) {
-                    p.closeLog();
-                }
-            } catch (IOException e) {
-                System.out.println("Error closing player " + p.getPlayerNumber() + "'s log file.");
-            }
         }
         
-
         //Step 11: Print winner to terminal
         System.out.println("");
         for (Player p : players) {

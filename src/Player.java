@@ -131,11 +131,11 @@ class Player extends Thread {
 
                 // Check for win condition
                 if (hasWon()) {
-                    gameEnded.set(true);
                     logAction("Wins");
                     logAction("Exits");
                     logAction("final hand: " + getHandAsString());
                     notifyPlayersOfWin(this);
+                    gameEnded.set(true);
                     break;
                 }
 
@@ -150,7 +150,7 @@ class Player extends Thread {
 
     /**
      * Notifies all players (except the winner) that the specified player has won, logs the exit message 
-     * for each player, and displays their hand.
+     * for each player, and displays their hand. Also interrupts their threads to terminate gracefully.
      * @param winner player who has won the game
      */
     public void notifyPlayersOfWin(Player winner) {
@@ -164,9 +164,12 @@ class Player extends Thread {
                     otherPlayer.logAction("exits");
                     otherPlayer.logAction("hand: " + otherPlayer.getHandAsString());
                 }
+                
+                otherPlayer.interrupt();
             }
         }
     }
+
 
     /**
      * Logs the specified action for the player both to a log file and the console.
@@ -175,6 +178,7 @@ class Player extends Thread {
      */
     public synchronized void logAction(String action) {
         try {
+            if (gameEnded.get()) return; //skips loggin if game has ended
             if (action.isEmpty()) {
                 logWriter.write("\n");
                 System.out.println(); // manual terminal inspection
