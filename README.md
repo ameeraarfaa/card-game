@@ -23,7 +23,12 @@ This Java terminal-based card game simulates a multiplayer card game where playe
         ```
          java -jar cards.jar
         ```
-3. Follow instructions on terminal to play the gmae.
+3. Follow instructions on terminal to play the game.
+   - Entering the Number of Players:
+     Ensure that the number is 2 or greater, as the game requires at least two players
+   - Providing the Card Pack File:
+     - Place the card pack file in the res folder, located at the root of the project directory.
+     - When prompted, type the file name (e.g., pack.txt) and press Enter.
 
 ## Given Pack Files
 **These files can be found in the 'Res' folder**. In each pack, denominations are included up to a point where the total number of cards, calculated as 4 copies of each denomination, satisfies the 8*N rule, where N is the number of players. This ensures that the total number of cards in the pack aligns with the required card count for the game, and confirms that it is legal for the denomination of a card to exceed N. For example:
