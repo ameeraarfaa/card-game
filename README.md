@@ -60,3 +60,24 @@ These packs are intentionally invalid and should not be accepted by the game, tr
 - **2_players_w_string_number.txt**: A 2-player game pack containing string values (e.g., "one" instead of 1).
 
 ## Testing
+All test files are located in the testing folder. Each test file corresponds to a specific class to ensure comprehensive unit testing.
+- **CardTest.java**: Contains unit tests for the Card class.
+- **CardDeckTest.java**: Contains unit tests for the CardDeck class.
+- **PlayerTest.java**: Contains unit tests for the Player class.
+- **CardGameTest.java**: Contains unit tests for the CardGame class.
+- **CardGameTestSuiteTest.java**: A test suite that runs all the test classes together.
+
+### Running Tests
+1.	Navigate to the testing folder.
+2.	Compile the test files.
+   ```
+   javac testing/*.java
+   ```
+4.	Run the CardGameTestSuite.java file to execute all tests simultaneously.
+   ```
+   java testing.CardGameTestSuite
+   ```
+
+### Notes
+- Ensure that all dependencies and libraries required for testing (e.g., JUnit) are correctly set up in your development environment.
+- Any updates to the main classes should be accompanied by updates to the respective test files.
