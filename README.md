@@ -24,9 +24,9 @@ This Java terminal-based card game simulates a multiplayer card game where playe
          java -jar cards.jar
         ```
 3. Follow instructions on terminal to play the game.
-   - Entering the Number of Players:
+   - **Entering the Number of Players**:
      Ensure that the number is 2 or greater, as the game requires at least two players
-   - Providing the Card Pack File:
+   - **Providing the Card Pack File**:
      - Place the card pack file in the res folder, located at the root of the project directory.
      - When prompted, type the file name (e.g., pack.txt) and press Enter.
 
