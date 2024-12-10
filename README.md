@@ -60,6 +60,7 @@ These packs are intentionally invalid and should not be accepted by the game, tr
 - **2_players_w_string_number.txt**: A 2-player game pack containing string values (e.g., "one" instead of 1).
 
 ## Testing
+### Test Files
 **All test files are located in the 'test' folder.** Each test file corresponds to a specific class to ensure comprehensive unit testing.
 - **CardTest.java**: Contains unit tests for the Card class.
 - **CardDeckTest.java**: Contains unit tests for the CardDeck class.
