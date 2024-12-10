@@ -76,6 +76,6 @@ These packs are intentionally invalid and should not be accepted by the game, tr
    ```
 
 ### Notes
-- Requires JDK 18 OR higher.
+- Requires JDK 18 or higher.
 - Ensure that all dependencies and libraries required for testing (e.g., JUnit) are correctly set up in your development environment.
 - Any updates to the main classes should be accompanied by updates to the respective test files.
