@@ -12,7 +12,10 @@ This Java terminal-based card game simulates a multiplayer card game where playe
 1. Clone or download the repository to your local machine.
 2. Running the Game
    - **Using Executable Class (CardGame)**:
-     - Navigate to the 'bin' directory of the cardsTest.
+     - Navigate to the bin directory of the cardsTest.
+       ```
+       cd path\to\cardsTest\bin
+       ```
      - Run the following command to start the game.
         ```
          java CardGame
@@ -78,6 +81,7 @@ These packs are intentionally invalid and should not be accepted by the game, tr
    ```
    java -cp ".;libs/junit-4.13.2.jar;libs/hamcrest-core-1.3.jar;bin" org.junit.runner.JUnitCore CardGameTestSuiteTest
    ```
+3. Test output files generated.
 
 ### Notes
 - Requires JDK 18 or higher.
