@@ -68,16 +68,13 @@ These packs are intentionally invalid and should not be accepted by the game, tr
 - **CardGameTestSuiteTest.java**: A test suite that runs all the test classes together.
 
 ### Running Tests
-1.	Navigate to the test folder.
-2.	Compile the test files.
+1.	Navigate to the root directory on terminal.
+2. Run the test file using terminal. Users may also replace 'CardGameTestSuiteTest' with any of the test files provided.
    ```
-   javac test/*.java
-   ```
-4.	Run the CardGameTestSuite.java file to execute all tests simultaneously.
-   ```
-   java test.CardGameTestSuite
+   java -cp ".;libs/junit-4.13.2.jar;libs/hamcrest-core-1.3.jar;bin" org.junit.runner.JUnitCore CardGameTestSuiteTest
    ```
 
 ### Notes
+- Requires JDK 18 OR higher.
 - Ensure that all dependencies and libraries required for testing (e.g., JUnit) are correctly set up in your development environment.
 - Any updates to the main classes should be accompanied by updates to the respective test files.
